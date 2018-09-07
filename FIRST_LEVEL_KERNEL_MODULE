@@ -1,0 +1,22 @@
+# (using ubuntu 18.04.1/linux 4.15)
+
+# prepare the .c and makefile
+# build the module
+$make
+
+# signing the module is required with a secure boot....
+ 
+one time: generate some keys: openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=HOUSE/"
+one time: register they key (require reboot): sudo mokutil --import MOK.der
+# every build, sign:
+$ /usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 ./MOK.priv ./MOK.der first_level.ko
+
+# ..... end of module signing
+
+$ sudo insmod first_level.ko
+$ sudo rmmod first_level.ko
+$ dmesg
+(snip, snip...)
+[ 1119.321873] It is over 9000!
+[ 1124.024466] What? 9000?
+
