@@ -1,3 +1,7 @@
+How to get a module in the linux kernel
+======================================
+
+
 # (using ubuntu 18.04.1/linux 4.15)
 
 # prepare the .c and makefile
@@ -5,7 +9,7 @@
 $make
 
 # signing the module is required with a secure boot....
- 
+
 one time: generate some keys: openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=HOUSE/"
 one time: register they key (require reboot): sudo mokutil --import MOK.der
 # every build, sign:
